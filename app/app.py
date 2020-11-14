@@ -15,7 +15,7 @@ def cities_import() -> List[Dict]:
 		'database': 'citiesData'
 	}
 	connection = mysql.connector.connect(**config)
-	cursor = connection.cursor(dictionart=True)
+	cursor = connection.cursor(dictionary=True)
 
 	cursor.execute('SELECT * FROM tblCitiesImport')
 	result = cursor.fetchall()
