@@ -3,8 +3,10 @@ import mysql.connector
 import simplejson as json
 from flask import Flask, Response
 from flask import render_template
+import os
 
-app = Flask(__name__)
+
+app = Flask(__name__, template_folder='templates')
 
 
 def cities_import() -> List[Dict]:
@@ -31,6 +33,7 @@ def cities_import() -> List[Dict]:
 def index():
     user = {'username': 'Miguel'}
     cities_data = cities_import()
+    # print(os.getcwd())
     return render_template('index.html', title='Home', user=user, cities=cities_data)
 
 
@@ -42,4 +45,5 @@ def cities() -> str:
 
 
 if __name__ == '__main__':
+    # print(os.getcwd())
     app.run(host='0.0.0.0')
