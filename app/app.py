@@ -34,21 +34,18 @@ def record_view(title):
 
 
 @app.route('/edit/<string:title>', methods=['GET'])
-def form_edit_get(city_id):
+def form_edit_get(title):
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM MovieRating WHERE id=%s', city_id)
+    cursor.execute('SELECT * FROM MovieRating WHERE Title=%s', title)
     result = cursor.fetchall()
-    return render_template('edit.html', title='Edit Form', city=result[0])
+    return render_template('edit.html', title='Edit Form', mr=result[0])
 
 
 @app.route('/edit/<string:title>', methods=['POST'])
-def form_update_post(city_id):
+def form_update_post(title):
     cursor = mysql.get_db().cursor()
-    inputData = (request.form.get('fldName'), request.form.get('fldLat'), request.form.get('fldLong'),
-                 request.form.get('fldCountry'), request.form.get('fldAbbreviation'),
-                 request.form.get('fldCapitalStatus'), request.form.get('fldPopulation'), city_id)
-    sql_update_query = """UPDATE MovieRating t SET t.fldName = %s, t.fldLat = %s, t.fldLong = %s, t.fldCountry = 
-    %s, t.fldAbbreviation = %s, t.fldCapitalStatus = %s, t.fldPopulation = %s WHERE t.id = %s """
+    inputData = (request.form.get('score'), request.form.get('year'), title)
+    sql_update_query = """UPDATE MovieRating m SET m.Score = %s, m.Year = %s WHERE m.Title = %s """
     cursor.execute(sql_update_query, inputData)
     mysql.get_db().commit()
     return redirect("/", code=302)
