@@ -53,12 +53,13 @@ def form_update_post(city_id):
     mysql.get_db().commit()
     return redirect("/", code=302)
 
-@app.route('/cities/new', methods=['GET'])
+
+@app.route('/mrs/new', methods=['GET'])
 def form_insert_get():
     return render_template('new.html', title='New City Form')
 
 
-@app.route('/cities/new', methods=['POST'])
+@app.route('/mrs/new', methods=['POST'])
 def form_insert_post():
     cursor = mysql.get_db().cursor()
     inputData = (request.form.get('fldName'), request.form.get('fldLat'), request.form.get('fldLong'),
@@ -78,7 +79,7 @@ def form_delete_post(city_id):
     return redirect("/", code=302)
 
 
-@app.route('/api/v1/cities', methods=['GET'])
+@app.route('/api/v1/mrs', methods=['GET'])
 def api_browse() -> str:
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM MovieRating')
