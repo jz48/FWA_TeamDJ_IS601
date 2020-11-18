@@ -45,7 +45,7 @@ def form_edit_get(title):
 def form_update_post(title):
     cursor = mysql.get_db().cursor()
     inputData = (request.form.get('score'), request.form.get('year'), title)
-    sql_update_query = """UPDATE MovieRating m SET m.Score = %s, m.Year = %s WHERE m.Title = %s """
+    sql_update_query = """UPDATE MovieRating m SET t.Score = %s, t.Year = %s WHERE t.title = %s """
     cursor.execute(sql_update_query, inputData)
     mysql.get_db().commit()
     return redirect("/", code=302)
@@ -53,14 +53,16 @@ def form_update_post(title):
 
 @app.route('/mrs/new', methods=['GET'])
 def form_insert_get():
-    return render_template('new.html', title='New Movie Rating Form')
+    return render_template('new.html', title='New City Form')
 
 
 @app.route('/mrs/new', methods=['POST'])
 def form_insert_post():
     cursor = mysql.get_db().cursor()
-    inputData = (request.form.get('title'), request.form.get('score'), request.form.get('year'))
-    sql_insert_query = """INSERT INTO MovieRating (Title, Score, Year) VALUES (%s, %s,%s) """
+    inputData = (request.form.get('fldName'), request.form.get('fldLat'), request.form.get('fldLong'),
+                 request.form.get('fldCountry'), request.form.get('fldAbbreviation'),
+                 request.form.get('fldCapitalStatus'), request.form.get('fldPopulation'))
+    sql_insert_query = """INSERT INTO MovieRating (fldName,fldLat,fldLong,fldCountry,fldAbbreviation,fldCapitalStatus,fldPopulation) VALUES (%s, %s,%s, %s,%s, %s,%s) """
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
     return redirect("/", code=302)
@@ -80,51 +82,35 @@ def api_browse() -> str:
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM MovieRating')
     result = cursor.fetchall()
-    json_result = json.dumps(result)
+    json_result = json.dumps(result);
     resp = Response(json_result, status=200, mimetype='application/json')
     return resp
 
 
-@app.route('/api/v1/mrs/<string:title>', methods=['GET'])
-def api_retrieve(title) -> str:
+@app.route('/api/v1/cities/<int:city_id>', methods=['GET'])
+def api_retrieve(city_id) -> str:
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM MovieRating WHERE Title=%s', title)
+    cursor.execute('SELECT * FROM MovieRating WHERE id=%s', city_id)
     result = cursor.fetchall()
-    json_result = json.dumps(result)
+    json_result = json.dumps(result);
     resp = Response(json_result, status=200, mimetype='application/json')
     return resp
 
 
-@app.route('/api/v1/mrs', methods=['POST'])
+@app.route('/api/v1/cities/', methods=['POST'])
 def api_add() -> str:
-    content = request.json
-    cursor = mysql.get_db().cursor()
-    inputData = (content['Title'], content['Score'], content['Year'])
-    sql_insert_query = """INSERT INTO MovieRating (Title, Score, Year) VALUES (%s, %s,%s) """
-    cursor.execute(sql_insert_query, inputData)
-    mysql.get_db().commit()
     resp = Response(status=201, mimetype='application/json')
     return resp
 
 
-@app.route('/api/v1/mrs/<string:title>', methods=['PUT'])
-def api_edit(title) -> str:
-    cursor = mysql.get_db().cursor()
-    content = request.json
-    inputData = (content['Score'], content['Year'], title)
-    sql_update_query = """UPDATE MovieRating m SET m.Score = %s, m.Year = %s WHERE m.Title = %s """
-    cursor.execute(sql_update_query, inputData)
-    mysql.get_db().commit()
+@app.route('/api/v1/cities/<int:city_id>', methods=['PUT'])
+def api_edit(city_id) -> str:
     resp = Response(status=201, mimetype='application/json')
     return resp
 
 
-@app.route('/api/mrs/<string:title>', methods=['DELETE'])
-def api_delete(title) -> str:
-    cursor = mysql.get_db().cursor()
-    sql_delete_query = """DELETE FROM MovieRating WHERE Title = %s """
-    cursor.execute(sql_delete_query, title)
-    mysql.get_db().commit()
+@app.route('/api/cities/<int:city_id>', methods=['DELETE'])
+def api_delete(city_id) -> str:
     resp = Response(status=210, mimetype='application/json')
     return resp
 
