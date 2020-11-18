@@ -33,7 +33,7 @@ def record_view(title):
     return render_template('view.html', title='View Form', mr=result[0])
 
 
-@app.route('/edit/<int:city_id>', methods=['GET'])
+@app.route('/edit/<string:title>', methods=['GET'])
 def form_edit_get(city_id):
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM MovieRating WHERE id=%s', city_id)
@@ -41,7 +41,7 @@ def form_edit_get(city_id):
     return render_template('edit.html', title='Edit Form', city=result[0])
 
 
-@app.route('/edit/<int:city_id>', methods=['POST'])
+@app.route('/edit/<string:title>', methods=['POST'])
 def form_update_post(city_id):
     cursor = mysql.get_db().cursor()
     inputData = (request.form.get('fldName'), request.form.get('fldLat'), request.form.get('fldLong'),
@@ -71,11 +71,11 @@ def form_insert_post():
     return redirect("/", code=302)
 
 
-@app.route('/delete/<int:city_id>', methods=['POST'])
-def form_delete_post(city_id):
+@app.route('/delete/<string:title>', methods=['POST'])
+def form_delete_post(title):
     cursor = mysql.get_db().cursor()
-    sql_delete_query = """DELETE FROM MovieRating WHERE id = %s """
-    cursor.execute(sql_delete_query, city_id)
+    sql_delete_query = """DELETE FROM MovieRating WHERE Title = %s """
+    cursor.execute(sql_delete_query, title)
     mysql.get_db().commit()
     return redirect("/", code=302)
 
