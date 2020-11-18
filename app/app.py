@@ -25,12 +25,12 @@ def index():
     return render_template('index.html', title='Home', user=user, ratings=result)
 
 
-@app.route('/view/<int:city_id>', methods=['GET'])
-def record_view(city_id):
+@app.route('/view/<string:title>', methods=['GET'])
+def record_view(title):
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM MovieRating WHERE id=%s', city_id)
+    cursor.execute('SELECT * FROM MovieRating WHERE Title=%s', title)
     result = cursor.fetchall()
-    return render_template('view.html', title='View Form', city=result[0])
+    return render_template('view.html', title='View Form', mr=result[0])
 
 
 @app.route('/edit/<int:city_id>', methods=['GET'])
@@ -69,6 +69,7 @@ def form_insert_post():
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
     return redirect("/", code=302)
+
 
 @app.route('/delete/<int:city_id>', methods=['POST'])
 def form_delete_post(city_id):
