@@ -1,7 +1,5 @@
 Flask
 mysql-connector
 simplejson
-PyHamcrest
-flask-ext
 Flask-MySQL
 pymysql
