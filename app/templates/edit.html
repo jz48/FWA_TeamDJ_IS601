@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/edit/{{mr.Title}}" method="post">
+    <div class="row">
+        <div class="col">
+            <label for="score">Score</label>
+            <input id="score" type="number" class="form-control" placeholder="score"
+                   name="score" value="{{mr.Score}}">
+        </div>
+        <div class="col">
+            <label for="year">Year</label>
+            <input id="year" type="number" class="form-control" placeholder="year" name="year" value="{{mr.year}}">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+
+</form>
+{% endblock %}
+

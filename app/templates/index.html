@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Movie Title</th>
+        <th scope="col">Score</th>
+        <th scope="col">Year</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for rating in ratings %}
+    <tr>
+        <td><a href="view/{{rating.Title}}">{{ rating.Title }}</a></td>
+        <td>{{ rating.Score }}</td>
+        <td>{{ rating.Year }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
