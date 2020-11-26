@@ -1,0 +1,92 @@
+<html>
+<head>
+    <title>
+        Mobile Drive - Login
+    </title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-firestore.js"></script>
+
+    <script>
+        // Initialize Firebase
+        let firebaseConfig = {
+            apiKey: "AIzaSyD_gcMOfUCGhDgsv6kbE_oQkEC6kRR66jo",
+            authDomain: "mobile-drive-56512.firebaseapp.com",
+            databaseURL: "https://mobile-drive-56512.firebaseio.com",
+            projectId: "mobile-drive-56512",
+            storageBucket: "mobile-drive-56512.appspot.com",
+            messagingSenderId: "167101083432",
+            appId: "1:167101083432:web:bcd322dc6f2ffe4ecb6a1d"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        function register() {
+            window.location.href = './register.html'
+        }
+
+        function login() {
+            Email = document.getElementById("email").value;
+            Password = document.getElementById("pass").value;
+            if (Email.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) == -1) {
+                alert("Error Email!");
+                return false;
+            }
+            if(Password == ''){
+                alert("The password can not be empty!")
+            }
+            firebase.auth().signInWithEmailAndPassword(Email, Password).then(function () {
+                alert("Login success!");
+                window.location.href = 'index.html';
+            }).catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert("Login failed!"+errorMessage);
+            });
+        }
+
+        function back2home(){
+            window.location.href="./index.html";
+        }
+    </script>
+</head>
+
+
+<body style="background-size: 100%;background-image:url(./images/pic_reg.jpg)">
+<div class="container" style="margin-top: 5%; ">
+    <h1 style="margin-left: 13%; font-weight: bold">Start your Journey Here.</h1>
+    <h1 style="margin-left: 26%; font-weight: bold">Best Cars and Best Services from MobileDrive</h1>
+</div>
+<div class="modal-dialog" style="margin-top: 2%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title text-center" id="myModalLabel">Login</h4>
+        </div>
+        <div class="modal-body" id = "model-body">
+            <div class="form-group">
+
+                <input type="email" class="form-control"placeholder="Email" autocomplete="off" id="email">
+            </div>
+            <div class="form-group">
+
+                <input type="password" class="form-control" placeholder="Password" autocomplete="off" id="pass">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <button type="button" class="btn btn-success form-control" onclick="login()">Login</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary form-control" onclick="register()">Register</button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+
+</body>
+
+</html>
