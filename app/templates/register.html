@@ -14,6 +14,7 @@
             crossorigin="anonymous"></script>
     <script>
         function valiData_register() {
+            let uid = document.getElementById("uid").value;
             let ufn = document.getElementById("ufn").value;
             let uln = document.getElementById("uln").value;
             let em = document.getElementById("email").value;
@@ -21,9 +22,13 @@
             let pw2 = document.getElementById("pw2").value;
             let bd = document.getElementById("bd").value;
             let pn = document.getElementById("pn").value;
-            let dlt = document.getElementById("dlt").value;
-            let dln = document.getElementById("dln").value;
-            console.log(ufn,uln,em,pw,pw2,bd,pn,dlt,dln);
+            let gen = document.getElementById("gen").value;
+            let book = document.getElementById("book").value;
+            console.log(uid, ufn, uln, em, pw, pw2, bd, pn, gen, book);
+            if (uid == ''){
+                alert("user ID shouldn\'t be empty!");
+                return false;
+            }
             if (ufn == ''){
                 alert("user first name shouldn\'t be empty!");
                 return false;
@@ -56,29 +61,27 @@
                 alert("phone number shouldn\'t be empty!");
                 return false;
             }
-            if (dln == ''){
-                alert("driving license number shouldn\'t be empty!");
+            if (book == ''){
+                alert("books shouldn\'t be empty!");
                 return false;
             }
-            ufn = ufn.replaceAll(' ','');
-            uln = uln.replaceAll(' ','');
-            let un = ufn+' '+uln;
-            let res = em.split('.');
-            let uid = res[0]+res[1];
+            let un = ufn + uln
             //console.log(un, uid);
-            reg(un,uid,em,pw,bd,pn,dlt,dln);
+            reg(uid, un, em, pw, bd, pn, gen, book);
         }
 
-        function reg(un,uid,em,pw,bd,pn,dlt,dln){
+        function reg(uid, un, em, pw, bd, pn, gen, book){
             let ifReg = 1;
 
             let data = {
+                userid: uid,
                 username: un,
                 email: em,
                 birthday: bd,
+                password: pw,
                 phoneNumber: pn,
-                dlt: dlt,
-                dln: dln
+                gender: gen,
+                book: book
             };
 
         }
@@ -96,12 +99,16 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
+                <label for="uid">User ID</label>
+                <input type="text" class="form-control" placeholder="User ID" id="uid">
+            </div>
+            <div class="form-group">
                 <label for="ufn">User first name</label>
-                <input type="text" class="form-control" placeholder="User name" id="ufn">
+                <input type="text" class="form-control" placeholder="User first name" id="ufn">
             </div>
             <div class="form-group">
                 <label for="uln">User last name</label>
-                <input type="text" class="form-control" placeholder="User name" id="uln">
+                <input type="text" class="form-control" placeholder="User last name" id="uln">
             </div>
             <div class="form-group">
                 <label for="email">Email address</label>
@@ -124,15 +131,15 @@
                 <input type="number" class="form-control" placeholder="Phone word" id="pn">
             </div>
             <div class="form-group">
-                <label for="dlt">Driving licence type</label>
-                <select class="form-control" id="dlt">
-                    <option>Australian</option>
-                    <option>International</option>
+                <label for="gen">gender</label>
+                <select class="form-control" id="gen">
+                    <option>Male</option>
+                    <option>Female</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="dln">Driving licence number</label>
-                <input type="number" class="form-control" placeholder="Driving licence number" id="dln">
+                <label for="book">the book you like</label>
+                <input type="text" class="form-control" placeholder="books" id="book">
             </div>
         </div>
         <div class="modal-footer">
