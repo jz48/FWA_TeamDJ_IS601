@@ -72,43 +72,6 @@
         function reg(un,uid,em,pw,bd,pn,dlt,dln){
             let ifReg = 1;
 
-            firebase.auth().createUserWithEmailAndPassword(em, pw).catch(function(error) {
-                // Handle Errors here.
-                alert('error when create user account');
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.log(errorMessage);
-                // ...
-                ifReg = 0;
-            });
-            if (!ifReg){
-                return false;
-            }
-            /*
-            let ifLog = 1;
-            firebase.auth().signInWithEmailAndPassword(em, pw).catch(function(error) {
-                // Handle Errors here.
-                alert('error when log in user account');
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.log(errorMessage);
-                ifLog = 0;
-            });
-            if (!ifLog){
-                return false;
-            }
-
-            let user = firebase.auth().currentUser;
-            user.updateProfile({
-                displayName : un,
-            }).then(function() {
-                console.log('')
-            }).catch(function(error) {
-                alert('error happen when update user information');
-                console.log(error)
-                // An error happened.
-            });
-            */
             let data = {
                 username: un,
                 email: em,
@@ -117,15 +80,7 @@
                 dlt: dlt,
                 dln: dln
             };
-            console.log(uid, data);
-            db.collection("userInfo").doc(uid).set(data)
-                .then(function() {
-                    console.log("Document successfully written!");
-                    window.location.href='login.html';
-                })
-                .catch(function(error) {
-                    console.error("Error writing document: ", error);
-                });
+
         }
 
         function back2log(){
