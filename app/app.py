@@ -116,7 +116,7 @@ def activate(new_id):
 
 @app.route('/accounts', methods=['GET'])
 def accounts():
-    user = {'username': 'Kelly'}
+    user = {'username': 'Krishna'}
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM Accounts')
     result = cursor.fetchall()
