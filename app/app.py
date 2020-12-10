@@ -38,14 +38,14 @@ def login():
         username = request.form['username']
         password = request.form['password']
         cursor = mysql.get_db().cursor()
-        cursor.execute ( 'SELECT * FROM accounts WHERE username = %s  AND password = %s', (username, password,) )
-        account = cursor.fetchone ()
-        if account:
+        sql_query = ('SELECT * FROM accounts WHERE username = %s')
+        accounts = (username,)
+        cursor.execute (sql_query, accounts)
+        result = cursor.fetchone ()['password']
+        if username:
             session['loggedin'] = True
-            session['id'] = account['id']
-            session['username'] = account['username']
-            msg = 'Logged in successfully !'
-            return redirect ( "/index", code=302 )
+            if check_password_hash (result, password ):
+                return redirect ( "/index", code=302)
             #return render_template ( 'index.html', msg=msg )
         else:
             msg = 'Incorrect username / password !'
@@ -68,35 +68,20 @@ def logout():
     return redirect ( url_for ( 'login' ) )
 
 
-@app.route ( '/register', methods=['GET', 'POST'] )
-def register():
-    msg = ''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-        cursor = mysql.get_db().cursor()
-        cursor.execute ( 'SELECT * FROM accounts WHERE username = %s', (username,) )
-        account = cursor.fetchone ()
-        if account:
-            msg = 'Account already exists !'
-        elif not re.match ( r'[^@]+@[^@]+\.[^@]+', email ):
-            msg = 'Invalid email address !'
-        elif not re.match ( r'[A-Za-z0-9]+', username ):
-            msg = 'Username must contain only characters and numbers !'
-        elif not username or not password or not email:
-            msg = 'Please fill out the form !'
-        else:
-            cursor.execute ( 'SELECT * FROM accounts WHERE password = %s', (username,password) )
-            hash_pass = generate_password_hash ( str(request.form['password']), "sha256" )
-            inputData = (request.form['username'], request.form['email'], hash_pass)
-            sql_insert_query = """INSERT INTO accounts (username, password, email) VALUES (%s,%s, %s)"""
-            cursor.execute (sql_insert_query, inputData )
-            mysql.get_db ().commit ()
-            msg = 'You have successfully registered !'
-    elif request.method == 'POST':
-        msg = 'Please fill out the form !'
-    return render_template ( 'register.html', msg=msg )
+@app.route('/register', methods=['GET'])
+def register_get():
+    cursor = mysql.get_db().cursor()
+    return render_template('register.html', title='Registration')
+
+@app.route('/register', methods=['POST'])
+def register_post():
+    cursor = mysql.get_db().cursor()
+    hash_pass = generate_password_hash(str(request.form['password']),"sha256")
+    inputData = (request.form['username'], hash_pass, request.form['email'])
+    sql_insert_query = """INSERT INTO accounts (username, password, email) VALUES (%s,%s, %s)"""
+    cursor.execute(sql_insert_query, inputData)
+    mysql.get_db().commit()
+    return redirect("/", code=302)
 
 
 
