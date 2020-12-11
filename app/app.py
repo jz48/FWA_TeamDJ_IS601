@@ -3,7 +3,7 @@ import simplejson as json
 from flask import Flask, request, Response, redirect
 from flask import render_template, url_for, session
 from flaskext.mysql import MySQL
-import re
+from random import randint
 from pymysql.cursors import DictCursor
 from flask_mail import Mail, Message
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -18,17 +18,16 @@ app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'LoginData'
 mysql.init_app(app)
 
-app.config['SECRET_KEY'] = 'WebApp'
-app.config['MAIL_SERVER'] = 'smtp.sendgrid.net'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'apikey'
-app.config['MAIL_PASSWORD'] = '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'
-app.config['MAIL_DEFAULT_SENDER'] = 'webappis601@zohomail.com'
+app.config["MAIL_SERVER"]='smtp.gmail.com'
+app.config["MAIL_PORT"]=587
+app.config["MAIL_USERNAME"]='webappis601@gmail.com'
+app.config['MAIL_PASSWORD']='h3lloworld1!'
+app.config['MAIL_USE_TLS']=True
+app.config['MAIL_USE_SSL']=False
 mail = Mail(app)
+otp = randint(000000,999999)
 
 name = ''
-
 
 @app.route ( '/' )
 @app.route ( '/login', methods=['GET', 'POST'] )
@@ -42,14 +41,41 @@ def login():
         accounts = (username,)
         cursor.execute (sql_query, accounts)
         result = cursor.fetchone ()['password']
-        if username:
-            session['loggedin'] = True
-            if check_password_hash (result, password ):
-                return redirect ( "/index", code=302)
+        #if username:
+            #session['loggedin'] = True
+        if check_password_hash (result, password ):
+            return redirect ( "/email", code=302 )
+                #return render_template ( 'verify.html' )
+                #return redirect ( "/verify", code=302)
             #return render_template ( 'index.html', msg=msg )
         else:
             msg = 'Incorrect username / password !'
     return render_template ( 'login.html', msg=msg )
+
+
+@app.route('/email')
+def email():
+    return render_template("login2.html")
+
+
+
+@app.route('/verify',methods=['POST'])
+def verify():
+    email = request.form['email']
+    msg=Message( subject='OTP', sender='webappis601@gmail.com', recipients= [email] )
+    msg.body = str(otp)
+    mail.send(msg)
+    return render_template('verify.html')
+
+@app.route('/validate',methods=['POST'])
+def validate():
+    user_otp=request.form['otp']
+    if otp == int(user_otp):
+        return redirect ( "/index", code=302 )
+    else:
+        return "<h3>Please Try Again</h3>"
+
+
 
 @app.route('/index', methods=['GET'])
 def index():
