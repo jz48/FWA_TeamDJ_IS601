@@ -25,7 +25,7 @@ app.config['MAIL_PASSWORD']='h3lloworld1!'
 app.config['MAIL_USE_TLS']=True
 app.config['MAIL_USE_SSL']=False
 mail = Mail(app)
-otp = randint(000000,999999)
+otp = randint(000000, 999999)
 
 name = ''
 
@@ -33,24 +33,27 @@ name = ''
 @app.route ( '/login', methods=['GET', 'POST'] )
 def login():
     msg = ''
+    print('log in request!')
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
+        print('1111111')
+        print(username, ' : ', password)
         cursor = mysql.get_db().cursor()
         sql_query = ('SELECT * FROM accounts WHERE username = %s')
         accounts = (username,)
         cursor.execute (sql_query, accounts)
         result = cursor.fetchone ()['password']
-        #if username:
-            #session['loggedin'] = True
-        if check_password_hash (result, password ):
-            return redirect ( "/email", code=302 )
-                #return render_template ( 'verify.html' )
-                #return redirect ( "/verify", code=302)
-            #return render_template ( 'index.html', msg=msg )
+        # if username:
+        #   session['loggedin'] = True
+        if check_password_hash(result, password):
+            return redirect("/email", code=302)
+            # return render_template ( 'verify.html' )
+            # return redirect ( "/verify", code=302)
+            # return render_template ( 'index.html', msg=msg )
         else:
             msg = 'Incorrect username / password !'
-    return render_template ( 'login.html', msg=msg )
+    return render_template('login.html', msg=msg)
 
 
 @app.route('/email')
