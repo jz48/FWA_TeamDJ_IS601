@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-<form action="/edit/{{mr.Title}}" method="post">
+    <div class="container">
+        <form action="/edit/{{mr.Title}}" method="post">
     <div class="row">
         <div class="col">
             <label for="score">Score</label>
@@ -13,7 +14,8 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Save</button>
+    <button type="submit" class="btn btn-block btn-success">Save</button>
 
 </form>
+    </div>
 {% endblock %}

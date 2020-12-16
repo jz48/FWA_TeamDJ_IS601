@@ -21,6 +21,7 @@
                 .then(function (html){
                     // var parser = new DOMParser();
 	                // var doc = parser.parseFromString(html, 'text/html');
+                    document.close();
 	                document.write(html);
                 })
                 .then(function (err){
@@ -49,6 +50,7 @@
                 return res.text()
             })
             .then((html)=>{
+                document.close();
                 document.write(html);
             })
         }

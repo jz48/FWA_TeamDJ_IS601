@@ -26,11 +26,11 @@ app.config['MAIL_USE_TLS']=True
 app.config['MAIL_USE_SSL']=False
 mail = Mail(app)
 otp = randint(000000, 999999)
-
 name = ''
 
-@app.route ( '/' )
-@app.route ( '/login', methods=['GET', 'POST'] )
+
+@app.route('/')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     msg = ''
     print('log in request!')
@@ -61,7 +61,6 @@ def email():
     return render_template("login2.html")
 
 
-
 @app.route('/verify',methods=['POST'])
 def verify():
     email = request.form['email']
@@ -70,6 +69,7 @@ def verify():
     mail.send(msg)
     return render_template('verify.html')
 
+
 @app.route('/validate',methods=['POST'])
 def validate():
     user_otp=request.form['otp']
@@ -77,7 +77,6 @@ def validate():
         return redirect ( "/index", code=302 )
     else:
         return "<h3>Please Try Again</h3>"
-
 
 
 @app.route('/index', methods=['GET'])
@@ -89,12 +88,12 @@ def index():
     return render_template('index.html', title='Home', user=user, ratings=result)
 
 
-@app.route ( '/logout' )
+@app.route('/logout')
 def logout():
-    session.pop ( 'loggedin', None )
-    session.pop ( 'id', None )
-    session.pop ( 'username', None )
-    return redirect ( url_for ( 'login' ) )
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 
 @app.route('/register', methods=['GET'])
@@ -102,17 +101,16 @@ def register_get():
     cursor = mysql.get_db().cursor()
     return render_template('register.html', title='Registration')
 
+
 @app.route('/register', methods=['POST'])
 def register_post():
     cursor = mysql.get_db().cursor()
-    hash_pass = generate_password_hash(str(request.form['password']),"sha256")
+    hash_pass = generate_password_hash(str(request.form['password']), "sha256")
     inputData = (request.form['username'], hash_pass, request.form['email'])
     sql_insert_query = """INSERT INTO accounts (username, password, email) VALUES (%s,%s, %s)"""
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
     return redirect("/", code=302)
-
-
 
 
 @app.route('/view/<string:title>', methods=['GET'])
@@ -217,6 +215,7 @@ def api_delete(title) -> str:
     mysql.get_db().commit()
     resp = Response(status=210, mimetype='application/json')
     return resp
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
