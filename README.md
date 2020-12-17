@@ -3,7 +3,8 @@
 This project is a team assignment to create a login&verify demo with a simple application.
 
 ## steps to use the demo:
-1. build the docker and open the container.
+0. Clone Repository 
+1. build the docker and open the container and Go to (http://0.0.0.0:5000/) or (http://localhost:5000/) varies from computer to computer
 2. enter home page.
 3. for a new user, click register button before log in.
 4. register with a username, password and real email for verify.
