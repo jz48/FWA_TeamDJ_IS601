@@ -1,4 +1,4 @@
-<html>
+<html xmlns:text-align="http://www.w3.org/1999/xhtml">
 <head>
     <title> Login </title>
     <meta charset="UTF-8">
@@ -56,10 +56,13 @@
         }
     </script>
 </head>
-<body style="background-size: 100%;background-image:url(../static/pic_reg.jpg)">
+<body style="background-size: 100%;background-color:#d75814 ">
 <div class="container" style="margin-top: 5%; ">
-    <h1 style="margin-left: 13%; font-weight: bold">Start your Journey Here</h1>
-    <h1 style="margin-left: 26%; font-weight: bold">Register and log in with our login demo</h1>
+    <h1 style="text-align: center; font-weight: bold"></h1>
+    <div class="text-center">
+    <h1> <img src="../static/AH_Long.png" class="rounded mx-auto d-block" alt=""> </h1>
+    </div>
+    <h1 style="color:white; text-align: center ; font-weight: bold">Employee Portal</h1>
 </div>
 <div class="modal-dialog" style="margin-top: 2%;">
     <div class="modal-content">
@@ -84,7 +87,7 @@
                 <button type="button" class="btn btn-primary form-control" onclick="register()">Register</button>
             </div>
         </div>
-        <p class="bottom">Don't have an account?  <a class="bottom" href="{{url_for('register_get')}}"> Sign Up here</a></p>
+        <p style="text-align: center; class="bottom" >Don't have an account?  <a class="bottom" href="{{url_for('register_get')}}"> Sign Up here</a></p>
     </div>
 </div>
 </body>
